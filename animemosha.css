@@ -1,0 +1,288 @@
+* {
+	/*はじめにある全体の余白を無くし以後、余白を含める*/
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+	/*全体の基本的な文字色の指定と大きさ*/
+    color: #333333;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    font-family: "�q���M�m�p�S Pro W3", "Hiragino Kaku Gothic Pro", "���C���I", Meiryo, Osaka, "�l�r �o�S�V�b�N", "MS PGothic", sans-serif;
+}
+img {
+	/*全ての画像はどの画面幅においても
+	100%より大きくならない*/
+	max-width: 100%;
+	height: auto;
+	max-height: 100%; 
+}
+p {
+    margin: 0;
+}
+a {
+    color: white;
+    text-decoration: none;
+}
+
+
+
+
+.gazou {
+	background: gray;
+	width: 100%;
+	margin: 0 auto;
+
+}
+
+.gazou-container {
+	width: 1175px;
+	max-width: 100%;
+	margin: 0 auto;
+	text-align: center;
+	padding: 200px 20px;
+	
+}
+.gazou-container-text {
+	cursor: pointer;
+}
+
+
+
+
+/*全体部分*/
+
+.sec{
+	width: 100%;
+    background-image: url('https://cdn.roomclip.jp/v1/w/750/roomclip-mag/img_750/c287fe02d09d8317fed8d1c689a999299e9499d6.jpg');
+    background-attachment: fixed;
+    padding-bottom: 30px;
+    color:  white;
+}
+ 
+.flex{
+	width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+
+}
+/*左の画像部分*/
+ 
+.img-container {
+	width: 50%;
+	/*このoverflow: hidden;がめちゃ重要
+	この枠内超えたら消える仕組みになってる。*/
+	overflow: hidden;
+	border: solid 1px black;
+	/*こいつに.relative指定を行い、
+	疑似要素にabsolute使う予定
+	重ねる。画像と背景を。*/
+	position: relative;
+}
+.img-container__img{
+    display: block;
+    /*とりあえず画像隠しておく
+    opacityで隠しているので場所はとられている*/
+    opacity: 0;
+    transition:all .5s .3s ease; 
+    z-index: 0;
+}
+/*擬似要素を用いてスライドさせる（左に隠す。）
+absoluteを使うことで画像かぶらせてる。
+スライドさせるときにこいつが上に来てほしいので
+z-indexを１に指定した。*/
+.img-container::before{
+    background: #333;
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    transform: translateX(-100%);
+    transition:all .8s 0s ease; 
+    width: 100%;
+    z-index: 1;     
+}
+/*左の画像、topから7割に来たら、activeを与え
+見えるようにする。*/
+.img-container.active img{
+    opacity: 1;
+}
+
+.img-container.active::before{
+    transform: translateX(100%);        
+}
+
+/*text部分をいじくります。*/
+
+.text-container {
+   width: 50%;
+   border: solid 1px black;
+}
+.text-container{
+    opacity: 0;
+    padding:0 60px;
+    transition: all .8s .6s ease;
+}
+.text-container__title{
+    color: #333;
+    font-size: 60px;
+    font-weight: 700;
+}
+.text-container.active{
+    opacity: 1;
+}
+
+
+
+
+
+/*ここから今まで習った、スキルを組み込んでいく*/
+
+/*まずは押したら上に戻るボタンと追加と立体的に見せる*/
+.top-go-btn {
+	width: 150px;
+	margin: 30px auto;
+	padding: 10px;
+	background: lightgray;
+	box-shadow:  0 10px gray;
+	border-radius: 5px;
+	color: black;
+	text-align: center;
+	cursor: pointer;
+}
+.top-go-btn:active {
+	box-shadow: none;
+	position: relative;
+	top: 10px;
+}
+.top-go-btn:hover {
+	color: white;
+}
+
+/*上に戻るボタンを押したら、topに見てくれてありがとうと表示*/
+.gazou-container-text h3 {
+     margin-top: 50px;
+     color: white;
+     display: none;
+     font-size: 22px;
+
+}
+/*hoverを使う注意点はdisplay: noneを使うときは
+その消したいところ単体に使う*/
+.hyouzi {
+   color:  white;
+   text-align: center;
+   font-size:  30px;
+   opacity:  0.8;
+   font-weight: 800;
+}
+
+.hyouzi p {
+	display: none;
+}
+
+/*ハンバーガーメニュー表示します*/
+.hunber {
+  /*position:relative;が設定されていないので起点
+  からどれだけの位置にあるかを示す絶対位置の指定*/
+  
+  position: fixed;
+  right: 65px;
+  top:  60px;
+  
+  /*でもこのままじゃ位置を指定しただけでこのhamburger
+  がどのくらいの面積占めているかわからんから,widthとheight
+  の指定が必要*/
+  width:  40px;                          
+  height:  40px;
+  z-index: 300;
+}
+.line {
+  position:  absolute;
+  top: 5px;
+  left:  5px;
+  height:  6px;
+  width:  40px;
+  z-index: 200;
+  background: black;
+  transition: all 0.6s;
+}
+
+.one {
+  top:  14px;
+}
+
+.second {
+  top:  33px;
+
+
+} 
+
+/*押したときの変形*/
+
+.nav-open .one {
+  transform: rotate(45deg);
+  top:  20px;
+}
+
+.nav-open .second {
+  transform: rotate(-45deg);
+  top:  20px;
+}
+/*中身の記述*/
+.globalMenuSp {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    text-align: center;
+    transform: translateY(-100%);
+    transition: all 0.6s;
+    width: 100%;
+}
+ 
+.globalMenuSp ul {
+    background-color: #ccc;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+}
+ 
+.globalMenuSp ul li {
+    font-size: 1.1em;
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    border-bottom: 1px dotted #333;
+}
+ 
+/* 最後はラインを描かない */
+.globalMenuSp ul li:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+ 
+.globalMenuSp ul li a {
+    display: block;
+    color: #000;
+    padding: 1em 0;
+}
+ 
+/* このクラスを、jQueryで付与・削除する */
+.globalMenuSp.nav-open {
+    transform: translateY(0%);
+}
+
+/*twitterに戻る*/
+.my-color {
+	color: blue;
+}
+.twitter:hover {
+	color: lightblue;
+
+}
